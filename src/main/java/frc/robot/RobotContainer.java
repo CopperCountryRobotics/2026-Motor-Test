@@ -13,6 +13,7 @@ import frc.robot.subsystems.Subsystem;
 import com.thethriftybot.devices.ThriftyNova;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -30,12 +31,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private final XboxController xbox = new XboxController(OperatorConstants.kDriverControllerPort);
 
-  private final Subsystem subsys = new Subsystem();
+  //private final Subsystem subsys = new Subsystem(xbox);
+  private final Vision vision = new Vision();
   // ThriftyNova.MotorType motor = ThriftyNova.MotorType.NEO;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  private final XboxController xbox = new XboxController(OperatorConstants.kDriverControllerPort);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -62,12 +64,17 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    new JoystickButton(xbox, 0).whileTrue(subsys.run(1));// X
-    new JoystickButton(xbox, 1).whileTrue(subsys.run(0.7));// A
-    new JoystickButton(xbox, 2).whileTrue(subsys.run(-0.5));// B
-    new JoystickButton(xbox, 3).whileTrue(subsys.run(-1));// Y
+   // new JoystickButton(xbox, 0).whileTrue(subsys.run(1));// X
+    // new JoystickButton(xbox, 1).whileTrue(subsys.run(0.7));// A
+    // new JoystickButton(xbox, 2).whileTrue(subsys.run(-0.5));// B
+    // new JoystickButton(xbox, 3).whileTrue(subsys.run(-1));// Y
   }
 
+  public void updates(){
+    SmartDashboard.putNumber("Skew",vision.getSkew());
+    SmartDashboard.putNumber("Pitch",vision.getPitch());
+    SmartDashboard.putNumber("Yaw",vision.getYaw());
+  }
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
